@@ -1,16 +1,17 @@
-docker run -d \
-    --net=workbench_subnet \
+docker run \
     --name=zookeeper1 \
+    --network rab \
     --hostname=zookeeper1 \
+    -p 2181:2181 \
     -e ZOO_MY_ID=1 \
     -e ZOO_PORT=2181 \
     -e ZOO_SERVERS='server.1=0.0.0.0:2888:3888;2181 server.2=zookeeper2:2888:3888;2181 server.3=zookeeper3:2888:3888;2181' \
     -e ZOO_STANDALONE_ENABLED='false' \
     zookeeper
 
-docker run -d \
-    --net=workbench_subnet \
+docker run  \
     --name=zookeeper2 \
+    --network rab \
     --hostname=zookeeper2 \
     -e ZOO_MY_ID=2 \
     -e ZOO_PORT=2182 \
@@ -18,9 +19,9 @@ docker run -d \
     -e ZOO_STANDALONE_ENABLED='false' \
     zookeeper
 
-docker run -d \
-    --net=workbench_subnet \
+docker run \
     --name=zookeeper3 \
+    --network rab \
     --hostname=zookeeper3 \
     -e ZOO_MY_ID=3 \
     -e ZOO_PORT=2183 \
@@ -29,7 +30,6 @@ docker run -d \
     zookeeper
 
 docker run -d \
-    --net=workbench_subnet \
     --name=broker1 \
     --hostname=broker1 \
     -e KAFKA_BROKER_ID=1 \
@@ -40,7 +40,6 @@ docker run -d \
     confluentinc/cp-kafka
 
 docker run -d \
-    --net=workbench_subnet \
     --name=broker2 \
     --hostname=broker2 \
     -e KAFKA_BROKER_ID=2 \
@@ -51,7 +50,6 @@ docker run -d \
     confluentinc/cp-kafka
 
 docker run -d \
-    --net=workbench_subnet \
     --name=broker3 \
     --hostname=broker3 \
     -e KAFKA_BROKER_ID=3 \
@@ -62,7 +60,6 @@ docker run -d \
     confluentinc/cp-kafka
 
 docker run -d \
-    --net=workbench_subnet \
     --name=broker4 \
     --hostname=broker4 \
     -e KAFKA_BROKER_ID=4 \
@@ -73,7 +70,6 @@ docker run -d \
     confluentinc/cp-kafka
 
 docker run -d \
-    --net=workbench_subnet \
     --name=broker5 \
     --hostname=broker5 \
     -e KAFKA_BROKER_ID=5 \
@@ -84,7 +80,6 @@ docker run -d \
     confluentinc/cp-kafka
 
 docker run -d \
-    --net=workbench_subnet \
     --name=broker6 \
     --hostname=broker6 \
     -e KAFKA_BROKER_ID=6 \
@@ -94,4 +89,4 @@ docker run -d \
     -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://broker6:29092 \
     confluentinc/cp-kafka
 
-docker run -d -p 19000:9000 --name kafka-manager -e ZK_HOSTS="zookeeper1:2181,zookeeper2:2182,zookeeper3:2183" --network="workbench_subnet" sheepkiller/kafka-manager
+docker run -d -p 19000:9000 --name kafka-manager -e ZK_HOSTS="zookeeper1:2181,zookeeper2:2182,zookeeper3:2183" sheepkiller/kafka-manager

@@ -50,6 +50,7 @@ services:
       - "29092:29092"
     environment:
       KAFKA_BROKER_ID: 1
+      KAFKA_BROKER_RACK: 1
       KAFKA_JMX_PORT: 9999
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper1:2181,zookeeper2:2181,zookeeper3:2181'
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker1:29092
@@ -65,13 +66,14 @@ services:
       - zookeeper2
       - zookeeper3
     ports:
-      - "9093:9093"
-      - "29093:29093"
+      - "9093:9092"
+      - "29093:29092"
     environment:
       KAFKA_BROKER_ID: 2
-      KAFKA_JMX_PORT: 9998
+      KAFKA_BROKER_RACK: 1
+      KAFKA_JMX_PORT: 9999
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper1:2181,zookeeper2:2181,zookeeper3:2181'
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:29093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker2:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_AUTO_LEADER_REBALANCE_ENABLE: 'true'
   
@@ -84,15 +86,76 @@ services:
       - zookeeper2
       - zookeeper3
     ports:
-      - "9094:9094"
-      - "29094:29094"
+      - "9094:9092"
+      - "29094:29092"
     environment:
       KAFKA_BROKER_ID: 3
-      KAFKA_JMX_PORT: 9997
+      KAFKA_BROKER_RACK: 2
+      KAFKA_JMX_PORT: 9999
       KAFKA_ZOOKEEPER_CONNECT: 'zookeeper1:2181,zookeeper2:2181,zookeeper3:2181'
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker3:29094
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker3:29092
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_AUTO_LEADER_REBALANCE_ENABLE: 'true'
+
+  broker4:
+    image: confluentinc/cp-kafka
+    hostname: broker4
+    container_name: broker4
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+      - zookeeper3
+    ports:
+      - "9095:9092"
+      - "29095:29092"
+    environment:
+      KAFKA_BROKER_ID: 4
+      KAFKA_BROKER_RACK: 2
+      KAFKA_JMX_PORT: 9999
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper1:2181,zookeeper2:2181,zookeeper3:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker4:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_AUTO_LEADER_REBALANCE_ENABLE: 'true'
+
+  broker5:
+    image: confluentinc/cp-kafka
+    hostname: broker5
+    container_name: broker5
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+      - zookeeper3
+    ports:
+      - "9096:9092"
+      - "29096:29092"
+    environment:
+      KAFKA_BROKER_ID: 5
+      KAFKA_BROKER_RACK: 3
+      KAFKA_JMX_PORT: 9999
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper1:2181,zookeeper2:2181,zookeeper3:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker5:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_AUTO_LEADER_REBALANCE_ENABLE: 'true'        
+
+  broker6:
+    image: confluentinc/cp-kafka
+    hostname: broker6
+    container_name: broker6
+    depends_on:
+      - zookeeper1
+      - zookeeper2
+      - zookeeper3
+    ports:
+      - "9097:9092"
+      - "29097:29092"
+    environment:
+      KAFKA_BROKER_ID: 6
+      KAFKA_BROKER_RACK: 3
+      KAFKA_JMX_PORT: 9999
+      KAFKA_ZOOKEEPER_CONNECT: 'zookeeper1:2181,zookeeper2:2181,zookeeper3:2181'
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://broker6:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_AUTO_LEADER_REBALANCE_ENABLE: 'true'    
 
   kafka-manager:
     image: sheepkiller/kafka-manager
@@ -109,6 +172,9 @@ services:
       - broker1
       - broker2
       - broker3
+      - broker4
+      - broker5
+      - broker6
 
   # schema-registry:
   #   image: confluentinc/cp-schema-registry:5.3.1
