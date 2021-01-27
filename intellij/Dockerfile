@@ -17,6 +17,8 @@ RUN echo "developer:x:1000:1000:Developer,,,:/home/developer:/bin/bash" >> /etc/
 RUN echo "developer:x:1000:" >> /etc/group
 RUN chown developer:developer -R /home/developer
 
+ENV LIBGL_ALWAYS_INDIRECT 1
+
 USER developer
 ENV HOME /home/developer
 WORKDIR /home/developer
