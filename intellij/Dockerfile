@@ -11,6 +11,7 @@ RUN tar -xzf /tmp/ideaIU-2020.3.2.tar.gz -C /opt/tools/ && rm /tmp/ideaIU-2020.3
 RUN apt-get install libxcursor1 libgbm1 libpango-1.0-0 libpangocairo-1.0-0 libxss1 -y
 
 RUN apt-get install git maven npm firefox -y
+RUN npm install -g @angular/cli ; exit 0
 
 RUN mkdir -p /home/developer
 RUN echo "developer:x:1000:1000:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd
