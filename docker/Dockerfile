@@ -5,6 +5,8 @@ LABEL maintainer="Rafael Bernabeu"
 RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN apt-get update && apt-get upgrade -y
 
-RUN apt-get install openjdk-11-jdk-headless maven -y
+RUN apt-get install curl -y
 
-WORKDIR /opt/project
+RUN curl -fsSL https://get.docker.com | sh
+
+RUN apt-get install docker-compose -y
