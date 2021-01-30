@@ -1,0 +1,41 @@
+version: '3.7'
+services:
+
+  intellij:
+    image: rbbernabeu/intellij
+    environment: 
+      - "DISPLAY"
+    volumes:
+      - /home/rab/docker/intellij:/home/developer
+      - ~/.m2:/home/developer/.m2
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - /var/run/docker.sock:/var/run/docker.sock
+    devices: 
+      - /dev/snd:/dev/snd
+    networks:
+      - docker_net
+
+  mysql:
+    image: rbbernabeu/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - docker_net
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    networks:
+      - docker_net
+
+  sonar:
+    image: sonarqube
+    ports:
+      - "9000:9000"
+    networks:
+      - docker_net
+
+networks:
+  docker_net:

@@ -1,1 +1,0 @@
-cmd /k docker logs mysql

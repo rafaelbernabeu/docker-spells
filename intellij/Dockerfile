@@ -18,6 +18,8 @@ RUN echo "developer:x:1000:1000:Developer,,,:/home/developer:/bin/bash" >> /etc/
 RUN echo "developer:x:1000:" >> /etc/group
 RUN chown developer:developer -R /home/developer
 
+RUN chown developer:developer -R /opt/tools
+
 USER developer
 ENV HOME /home/developer
 WORKDIR /home/developer
