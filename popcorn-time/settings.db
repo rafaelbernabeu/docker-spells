@@ -1,13 +1,18 @@
+{"key":"os","value":"linux","_id":"6LQI5tmyYzjQXRml"}
+{"key":"releaseName","value":"Love in the Time of Corona","_id":"C3u3EkD5NrtUdWzY"}
+{"key":"ipAddress","_id":"CW8BCXTsHfjUTqbh"}
+{"key":"showAdvancedSettings","value":true,"_id":"DyIiniDQIpgOO6yU"}
+{"key":"subtitle_language","value":"pt-br","_id":"PQ1aCjyA9W3uf2PX"}
+{"key":"language","value":"pt-br","_id":"WXmWApJRFKfoSkfQ"}
+{"key":"deleteTmpOnClose","value":false,"_id":"jFcPg4hoxByYtauC"}
+{"key":"arch","value":"x64","_id":"qfdOXipB7PknDt14"}
+{"key":"version","value":"0.4.4","_id":"uqUgPEPwugwfXAYY"}
+{"key":"disclaimerAccepted","value":1,"_id":"yGWCzTL1vjE2y4ce"}
 {"$$indexCreated":{"fieldName":"key","unique":true,"sparse":false}}
-{"key":"language","value":"en","_id":"WXmWApJRFKfoSkfQ"}
 {"key":"version","value":"0.4.4","_id":"uqUgPEPwugwfXAYY"}
 {"key":"releaseName","value":"Love in the Time of Corona","_id":"C3u3EkD5NrtUdWzY"}
 {"key":"arch","value":"x64","_id":"qfdOXipB7PknDt14"}
 {"key":"os","value":"linux","_id":"6LQI5tmyYzjQXRml"}
-{"key":"disclaimerAccepted","value":1,"_id":"yGWCzTL1vjE2y4ce"}
 {"key":"ipAddress","_id":"CW8BCXTsHfjUTqbh"}
-{"key":"showAdvancedSettings","value":true,"_id":"DyIiniDQIpgOO6yU"}
-{"key":"language","value":"pt-br","_id":"WXmWApJRFKfoSkfQ"}
+{"key":"vpnEnabled","value":false,"_id":"4n0sNL1jghZDGGif"}
 {"key":"ipAddress","_id":"CW8BCXTsHfjUTqbh"}
-{"key":"subtitle_language","value":"pt-br","_id":"PQ1aCjyA9W3uf2PX"}
-{"key":"deleteTmpOnClose","value":false,"_id":"jFcPg4hoxByYtauC"}

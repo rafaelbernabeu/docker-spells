@@ -1,5 +1,6 @@
 #!/bin/bash
 
+xhost +
 docker run -d -e DISPLAY \
     --name popcorn-time \
     --device=/dev/snd:/dev/snd \
