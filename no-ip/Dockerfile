@@ -12,13 +12,5 @@ RUN cd /usr/local/src/noip-2.1.9-1/ ; cat Makefile | sed '/\${BINDIR}\/\${TGT} -
 RUN cd /usr/local/src/noip-2.1.9-1/ ; make install
 # COPY no-ip.conf /usr/local/etc/no-ip2.conf
 
-RUN mkdir -p /home/developer
-RUN echo "developer:x:1000:1000:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd
-RUN echo "developer:x:1000:" >> /etc/group
-RUN chown developer:developer -R /home/developer
-
-# USER developer
-ENV HOME /home/developer
-WORKDIR /home/developer
-
-CMD ["sh", "-c", "noip2 -C -I eth0 -Y -u ${USER} -p ${PASSWORD} -U ${INTERVAL} -S; cat -"]
+# ENTRYPOINT
+CMD ["sh", "-c", "noip2 -C -I eth0 -Y -u ${USER} -p ${PASSWORD} -U ${INTERVAL};noip2 -d;tail -f /dev/null"]
