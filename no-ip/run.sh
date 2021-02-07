@@ -1,7 +1,7 @@
 #!/bin/bash
 
-docker run -ti --rm \
-    -e INTERVAL=15 \
-    -e USER=rbbernabeu@gmail.com \
-    -e PASSWORD=rFb913601584R \
-    rbbernabeu/no-ip $@
+docker run -d --name noip --rm \
+    -e INTERVAL={update time in minutes} \
+    -e USER={email-here} \
+    -e PASSWORD={password-here} \
+    rbbernabeu/no-ip
