@@ -13,4 +13,4 @@ RUN cd /usr/local/src/noip-2.1.9-1/ ; make install
 # COPY no-ip.conf /usr/local/etc/no-ip2.conf
 
 # ENTRYPOINT
-CMD ["sh", "-c", "noip2 -C -I eth0 -Y -u ${USER} -p ${PASSWORD} -U ${INTERVAL};noip2 -d;tail -f /dev/null"]
+CMD ["sh", "-c", "noip2 -C -I eth0 -Y -u ${USER} -p ${PASSWORD} -U ${INTERVAL};noip2 -d;tail --pid=$(pidof noip2) -f /dev/null"]
