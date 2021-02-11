@@ -8,7 +8,7 @@ RUN mkdir /opt/tools
 RUN cd /tmp && wget https://download.jetbrains.com/idea/ideaIU-2020.3.2.tar.gz
 RUN tar -xzf /tmp/ideaIU-2020.3.2.tar.gz -C /opt/tools/ && rm /tmp/ideaIU-2020.3.2.tar.gz
 
-RUN apt-get install libxcursor1 libgbm1 libpango-1.0-0 libpangocairo-1.0-0 libxss1 -y
+RUN apt-get install libxcursor1 libgbm1 libpango-1.0-0 libpangocairo-1.0-0 libxss1 libsecret-1-0 -y
 
 RUN apt-get install git maven npm firefox -y
 RUN npm install -g @angular/cli ; exit 0
