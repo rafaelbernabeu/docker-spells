@@ -6,7 +6,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=America/Sao_Paulo
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
@@ -24,11 +24,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=America/Sao_Paulo
     volumes:
       - /home/rab/docker/bazarr/config:/config
-      - /home/rab/Movies:/movies #optional
-      - '/home/rab/TV Shows:/tv' #optional
+      - /home/rab/Movies:/movies
+      - '/home/rab/TV Shows:/tv'
     ports:
       - 6767:6767
     restart: unless-stopped
@@ -39,9 +39,8 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
-      - AUTO_UPDATE=true #optional
-      - RUN_OPTS= #optional
+      - TZ=America/Sao_Paulo
+      - AUTO_UPDATE=true
     volumes:
       - /home/rab/docker/jackett/data:/config
       - /home/rab/Downloads:/downloads
@@ -49,13 +48,34 @@ services:
       - 9117:9117
     restart: unless-stopped
 
+  plex:
+    image: plexinc/pms-docker:latest
+    container_name: plex
+    environment:
+      - TZ=America/Sao_Paulo
+      - PUID=1000
+      - PGID=1000
+      - VA_DRIVER=IHD
+      - PLEX_HW_TRANS_MAX=16
+    volumes:
+      - /home/rab/docker/plex/config:/config
+      - /home/rab/docker/plex/data:/data
+      - /home/rab/docker/plex/transcode:/transcode
+      - /home/rab/Movies:/movies
+      - '/home/rab/TV Shows:/tv'
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/bus/usb:/dev/bus/usb
+    restart: unless-stopped
+    network_mode: host
+
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: prowlarr
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=America/Sao_Paulo
     volumes:
       - /home/rab/docker/prowlarr/data:/config
     ports:
@@ -68,11 +88,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=America/Sao_Paulo
     volumes:
       - /home/rab/docker/radarr/data:/config
-      - /home/rab/Movies:/movies #optional
-      - /home/rab/Downloads:/downloads #optional
+      - /home/rab/Movies:/movies
+      - /home/rab/Downloads:/downloads
     ports:
       - 7878:7878
     restart: unless-stopped
@@ -83,11 +103,11 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=America/Sao_Paulo
     volumes:
       - /home/rab/docker/sonarr/data:/config
-      - '/home/rab/TV Shows:/tv' #optional
-      - /home/rab/Downloads:/downloads #optional
+      - '/home/rab/TV Shows:/tv'
+      - /home/rab/Downloads:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -99,7 +119,7 @@ services:
       - LOG_LEVEL=${LOG_LEVEL:-info}
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
-      - TZ=Europe/London
+      - TZ=America/Sao_Paulo
     ports:
       - 8191:8191
     restart: unless-stopped
@@ -110,14 +130,8 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Etc/UTC
+      - TZ=America/Sao_Paulo
       - DB_CONNECTION=sqlite
-      - APP_KEY= #optional
-      - DB_HOST= #optional
-      - DB_PORT= #optional
-      - DB_DATABASE= #optional
-      - DB_USERNAME= #optional
-      - DB_PASSWORD= #optional
     volumes:
       - /home/rab/docker/speedtest/data:/config
     ports:
