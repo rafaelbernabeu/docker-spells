@@ -1,67 +1,5 @@
 ---
 services:
-  qbittorrent:
-    image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: qbittorrent
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Sao_Paulo
-      - WEBUI_PORT=8080
-      - TORRENTING_PORT=6881
-    volumes:
-      - /home/rab/docker/qbittorrent/config:/config
-      - /home/rab/Downloads:/downloads
-    ports:
-      - 8080:8080
-      - 6881:6881
-      - 6881:6881/udp
-    restart: unless-stopped
-
-  bazarr:
-    image: lscr.io/linuxserver/bazarr:latest
-    container_name: bazarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Sao_Paulo
-    volumes:
-      - /home/rab/docker/bazarr/config:/config
-      - /home/rab/Movies:/movies
-      - '/home/rab/TV Shows:/tv'
-    ports:
-      - 6767:6767
-    restart: unless-stopped
-
-  jackett:
-    image: lscr.io/linuxserver/jackett:latest
-    container_name: jackett
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Sao_Paulo
-      - AUTO_UPDATE=true
-    volumes:
-      - /home/rab/docker/jackett/data:/config
-      - /home/rab/Downloads:/downloads
-    ports:
-      - 9117:9117
-    restart: unless-stopped
-
-  overseerr:
-    image: sctx/overseerr
-    container_name: overseerr
-    depends_on:
-      - qbittorrent
-    environment:
-      - TZ=America/Sao_Paulo
-      - PORT=5055
-    volumes:
-      - /home/rab/docker/overseerr/config:/app/config
-    ports:
-      - '5055:5055'
-    restart: unless-stopped
-
   plex:
     image: plexinc/pms-docker:latest
     container_name: plex
@@ -82,19 +20,6 @@ services:
       - /dev/bus/usb:/dev/bus/usb
     restart: unless-stopped
     network_mode: host
-
-  prowlarr:
-    image: lscr.io/linuxserver/prowlarr:latest
-    container_name: prowlarr
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Sao_Paulo
-    volumes:
-      - /home/rab/docker/prowlarr/data:/config
-    ports:
-      - 9696:9696
-    restart: unless-stopped
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -126,6 +51,81 @@ services:
       - 8989:8989
     restart: unless-stopped
 
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+    volumes:
+      - /home/rab/docker/bazarr/config:/config
+      - /home/rab/Movies:/movies
+      - '/home/rab/TV Shows:/tv'
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+    volumes:
+      - /home/rab/docker/prowlarr/data:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+
+  overseerr:
+    image: sctx/overseerr
+    container_name: overseerr
+    depends_on:
+      - qbittorrent
+    environment:
+      - TZ=America/Sao_Paulo
+      - PORT=5055
+    volumes:
+      - /home/rab/docker/overseerr/config:/app/config
+    ports:
+      - '5055:5055'
+    restart: unless-stopped
+
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+      - WEBUI_PORT=8080
+      - TORRENTING_PORT=6881
+    volumes:
+      - /home/rab/docker/qbittorrent/config:/config
+      - /home/rab/Downloads:/downloads
+    ports:
+      - 8080:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+  
+  jackett:
+    image: lscr.io/linuxserver/jackett:latest
+    container_name: jackett
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+      - AUTO_UPDATE=true
+    volumes:
+      - /home/rab/docker/jackett/data:/config
+      - /home/rab/Downloads:/downloads
+    ports:
+      - 9117:9117
+    restart: unless-stopped
+
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
     container_name: flaresolverr
@@ -137,26 +137,3 @@ services:
     ports:
       - 8191:8191
     restart: unless-stopped
-
-  speedtest-tracker:
-    image: lscr.io/linuxserver/speedtest-tracker:latest
-    container_name: speedtest-tracker
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=America/Sao_Paulo
-      - DB_CONNECTION=sqlite
-    volumes:
-      - /home/rab/docker/speedtest/data:/config
-    ports:
-      - 80:80
-    restart: unless-stopped
-
-  portainer:
-    image: portainer/portainer-ce:latest
-    container_name: portainer
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    ports:
-      - 9000:9000
