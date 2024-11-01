@@ -11,7 +11,7 @@ services:
     image: "ghcr.io/home-assistant/home-assistant:stable"
     container_name: homeassistant
     volumes:
-      - /home/rab/docker/homeassistant/config:/config
+      - /root/docker/homeassistant/config:/config
       - /etc/localtime:/etc/localtime:ro
       - /run/dbus:/run/dbus:ro
     restart: unless-stopped
@@ -30,7 +30,7 @@ services:
       - APP_TIMEZONE=America/Sao_Paulo
       - DISPLAY_TIMEZONE=America/Sao_Paulo
     volumes:
-      - /home/rab/docker/speedtest/data:/config
+      - /root/docker/speedtest/data:/config
     ports:
       - 80:80
     restart: unless-stopped

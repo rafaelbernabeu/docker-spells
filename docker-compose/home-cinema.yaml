@@ -10,14 +10,13 @@ services:
       - VA_DRIVER=IHD
       - PLEX_HW_TRANS_MAX=16
     volumes:
-      - /home/rab/docker/plex/config:/config
-      - /home/rab/docker/plex/data:/data
-      - /home/rab/docker/plex/transcode:/transcode
-      - /home/rab/Movies:/movies
-      - '/home/rab/TV Shows:/tv'
-    devices:
-      - /dev/dri:/dev/dri
-      - /dev/bus/usb:/dev/bus/usb
+      - /root/docker/plex/config:/config
+      - /root/docker/plex/data:/data
+      - /root/docker/plex/transcode:/transcode
+      - /mnt/Movies:/movies
+      - '/mnt/TV Shows:/tv'
+    extra_hosts:
+      - "docker.local:10.0.0.111"
     restart: unless-stopped
     network_mode: host
 
@@ -29,11 +28,13 @@ services:
       - PGID=1000
       - TZ=America/Sao_Paulo
     volumes:
-      - /home/rab/docker/radarr/data:/config
-      - /home/rab/Movies:/movies
-      - /home/rab/Downloads:/downloads
+      - /root/docker/radarr/data:/config
+      - /mnt/Movies:/movies
+      - /mnt/Downloads:/downloads
     ports:
       - 7878:7878
+    extra_hosts:
+      - "docker.local:10.0.0.111"
     restart: unless-stopped
 
   sonarr:
@@ -44,9 +45,9 @@ services:
       - PGID=1000
       - TZ=America/Sao_Paulo
     volumes:
-      - /home/rab/docker/sonarr/data:/config
-      - '/home/rab/TV Shows:/tv'
-      - /home/rab/Downloads:/downloads
+      - /root/docker/sonarr/data:/config
+      - '/mnt/TV Shows:/tv'
+      - /mnt/Downloads:/downloads
     ports:
       - 8989:8989
     restart: unless-stopped
@@ -59,11 +60,13 @@ services:
       - PGID=1000
       - TZ=America/Sao_Paulo
     volumes:
-      - /home/rab/docker/bazarr/config:/config
-      - /home/rab/Movies:/movies
-      - '/home/rab/TV Shows:/tv'
+      - /root/docker/bazarr/config:/config
+      - /mnt/Movies:/movies
+      - '/mnt/TV Shows:/tv'
     ports:
       - 6767:6767
+    extra_hosts:
+      - "docker.local:10.0.0.111"
     restart: unless-stopped
 
   prowlarr:
@@ -74,9 +77,11 @@ services:
       - PGID=1000
       - TZ=America/Sao_Paulo
     volumes:
-      - /home/rab/docker/prowlarr/data:/config
+      - /root/docker/prowlarr/data:/config
     ports:
       - 9696:9696
+    extra_hosts:
+      - "docker.local:10.0.0.111"
     restart: unless-stopped
 
   overseerr:
@@ -88,9 +93,11 @@ services:
       - TZ=America/Sao_Paulo
       - PORT=5055
     volumes:
-      - /home/rab/docker/overseerr/config:/app/config
+      - /root/docker/overseerr/config:/app/config
     ports:
       - '5055:5055'
+    extra_hosts:
+      - "docker.local:10.0.0.111"
     restart: unless-stopped
 
   qbittorrent:
@@ -103,12 +110,14 @@ services:
       - WEBUI_PORT=8080
       - TORRENTING_PORT=6881
     volumes:
-      - /home/rab/docker/qbittorrent/config:/config
-      - /home/rab/Downloads:/downloads
+      - /root/docker/qbittorrent/config:/config
+      - /mnt/Downloads:/downloads
     ports:
       - 8080:8080
       - 6881:6881
       - 6881:6881/udp
+    extra_hosts:
+      - "docker.local:10.0.0.111"
     restart: unless-stopped
   
   jackett:
@@ -120,10 +129,12 @@ services:
       - TZ=America/Sao_Paulo
       - AUTO_UPDATE=true
     volumes:
-      - /home/rab/docker/jackett/data:/config
-      - /home/rab/Downloads:/downloads
+      - /root/docker/jackett/data:/config
+      - /mnt/Downloads:/downloads
     ports:
       - 9117:9117
+    extra_hosts:
+      - "docker.local:10.0.0.111"
     restart: unless-stopped
 
   flaresolverr:
@@ -136,4 +147,6 @@ services:
       - TZ=America/Sao_Paulo
     ports:
       - 8191:8191
+    extra_hosts:
+      - "docker.local:10.0.0.111"
     restart: unless-stopped
