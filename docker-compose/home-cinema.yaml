@@ -16,7 +16,7 @@ services:
       - /mnt/Movies:/movies
       - '/mnt/TV Shows:/tv'
     extra_hosts:
-      - "docker.local:10.0.0.111"
+      - "docker:10.0.0.111"
     restart: unless-stopped
     network_mode: host
 
@@ -34,7 +34,7 @@ services:
     ports:
       - 7878:7878
     extra_hosts:
-      - "docker.local:10.0.0.111"
+      - "docker:10.0.0.111"
     restart: unless-stopped
 
   sonarr:
@@ -66,7 +66,7 @@ services:
     ports:
       - 6767:6767
     extra_hosts:
-      - "docker.local:10.0.0.111"
+      - "docker:10.0.0.111"
     restart: unless-stopped
 
   prowlarr:
@@ -81,7 +81,7 @@ services:
     ports:
       - 9696:9696
     extra_hosts:
-      - "docker.local:10.0.0.111"
+      - "docker:10.0.0.111"
     restart: unless-stopped
 
   overseerr:
@@ -97,7 +97,7 @@ services:
     ports:
       - '5055:5055'
     extra_hosts:
-      - "docker.local:10.0.0.111"
+      - "docker:10.0.0.111"
     restart: unless-stopped
 
   qbittorrent:
@@ -117,7 +117,7 @@ services:
       - 6881:6881
       - 6881:6881/udp
     extra_hosts:
-      - "docker.local:10.0.0.111"
+      - "docker:10.0.0.111"
     restart: unless-stopped
   
   jackett:
@@ -134,7 +134,7 @@ services:
     ports:
       - 9117:9117
     extra_hosts:
-      - "docker.local:10.0.0.111"
+      - "docker:10.0.0.111"
     restart: unless-stopped
 
   flaresolverr:
@@ -148,5 +148,5 @@ services:
     ports:
       - 8191:8191
     extra_hosts:
-      - "docker.local:10.0.0.111"
+      - "docker:10.0.0.111"
     restart: unless-stopped
