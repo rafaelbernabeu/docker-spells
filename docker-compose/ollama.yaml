@@ -1,0 +1,66 @@
+services:
+  ## Ollama AI Model Runner (optional)
+  ## Run "ollama pull [name]:[version]" to download a vision model
+  ## listed at <https://ollama.com/search?c=vision>, for example:
+  ## docker compose exec ollama ollama pull qwen2.5vl:3b
+  ollama:
+    runtime: nvidia
+    image: ollama/ollama:latest
+    container_name: ollama
+    ## Only starts this service if the "ollama" profile is specified::
+    ## docker compose --profile ollama up -d
+    #profiles: ["ollama"]
+    ## Insecurely exposes the Ollama service on port 11434
+    ## without authentication (for private networks only):
+    ports:
+      - "11434:11434"
+    environment:
+      ## Ollama Configuration Options:
+      OLLAMA_HOST: "0.0.0.0:11434"
+      OLLAMA_MODELS: "/root/.ollama" # model storage path (see volumes section below)
+      OLLAMA_MAX_QUEUE: "100"        # maximum number of queued requests
+      OLLAMA_NUM_PARALLEL: "1"       # maximum number of parallel requests
+      OLLAMA_MAX_LOADED_MODELS: "1"  # maximum number of loaded models per GPU
+      OLLAMA_LOAD_TIMEOUT: "5m"      # maximum time for loading models (default "5m")
+      OLLAMA_KEEP_ALIVE: "10m"       # duration that models stay loaded in memory (default "5m")
+      OLLAMA_CONTEXT_LENGTH: "4096"  # maximum input context length
+      OLLAMA_MULTIUSER_CACHE: "1"    # optimize prompt caching for multi-user scenarios
+      # OLLAMA_DEBUG: "1"              # shows additional debug information
+      # OLLAMA_NOPRUNE: "1"            # disables pruning of model blobs at startup
+      # OLLAMA_NOHISTORY: "1"          # disables readline history
+      # OLLAMA_FLASH_ATTENTION: "1"    # enables the experimental flash attention feature
+      # OLLAMA_SCHED_SPREAD: "1"       # allows scheduling models across all GPUs.
+      # OLLAMA_GPU_OVERHEAD: "0"       # reserves a portion of VRAM per GPU (bytes)
+      # OLLAMA_INTEL_GPU: "1"          # enables experimental Intel GPU detection
+      ## NVIDIA GPU Hardware Acceleration (see https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html):
+      NVIDIA_VISIBLE_DEVICES: "all"
+      NVIDIA_DRIVER_CAPABILITIES: "compute,utility"
+    volumes:
+      - "/root/docker/ollama:/root/.ollama"
+    ## NVIDIA GPU Hardware Acceleration (see https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html):
+    restart: unless-stopped
+    stop_grace_period: 15s
+    deploy:
+     resources:
+       reservations:
+         devices:
+           - driver: "nvidia"
+             capabilities: [ gpu ]
+             count: "all"
+
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    volumes:
+      - /root/docker/open-webui:/app/backend/data
+    depends_on:
+      - ollama
+    ports:
+      - 3000:8080
+    environment:
+      - 'OLLAMA_BASE_URL=http://docker:11434'
+      - 'WEBUI_SECRET_KEY='
+    extra_hosts:
+      - "docker:10.0.0.111"
+    restart: unless-stopped
+

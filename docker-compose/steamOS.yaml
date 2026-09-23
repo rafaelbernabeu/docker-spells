@@ -1,0 +1,36 @@
+---
+services:
+  steamos:
+    image: linuxserver/steamos:latest
+    container_name: steamos
+    hostname: steamos
+    cap_add:
+      - NET_ADMIN
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined #optional
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/Sao_Paulo
+      - DRINODE=/dev/dri/renderD128
+      - STARTUP=KDE #optional
+      - RESOLUTION=1920x1080 #optional
+    volumes:
+      - /root/docker/steamos:/config
+    ports:
+      - 3000:3000
+      - 3001:3001
+      - 27031-27036:27031-27036/udp #optional
+      - 27031-27036:27031-27036 #optional
+      - 47984-47990:47984-47990 #optional
+      - 48010-48010:48010-48010 #optional
+      - 47998-48000:47998-48000/udp #optional
+    devices:
+      - /dev/dri:/dev/dri
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
+      - /dev/nvidia-uvm:/dev/nvidia-uvm
+      - /dev/nvidia-modeset:/dev/nvidia-modeset
+    shm_size: "1gb"
+    restart: unless-stopped

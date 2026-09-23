@@ -1,0 +1,108 @@
+---
+services:
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    environment:
+      - WATCHTOWER_CLEANUP=true
+      - DOCKER_API_VERSION=1.52
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      
+  speedtest-tracker:
+    image: lscr.io/linuxserver/speedtest-tracker:latest
+    container_name: speedtest-tracker
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - APP_KEY=base64:uZfnVcsmb/ZvbSVTp5GsK1Jwvie5jgUx05RxbJlpVWw=
+      - DB_CONNECTION=sqlite
+      - SPEEDTEST_SCHEDULE="*/30 * * * *"
+      - APP_TIMEZONE=America/Sao_Paulo
+      - DISPLAY_TIMEZONE=America/Sao_Paulo
+    volumes:
+      - /root/docker/speedtest/data:/config
+    ports:
+      - 8081:80
+    restart: unless-stopped
+
+  local-speedtest:
+    image: openspeedtest/latest
+    container_name: openspeedtest
+    ports:
+        - '4000:3000'
+        - '3001:3001'
+    restart: unless-stopped
+
+  homelable-backend:
+    image: ghcr.io/pouzor/homelable-backend:latest
+    container_name: homelable-backend
+    restart: unless-stopped
+    environment:
+      - SQLITE_PATH=/app/data/homelab.db
+      - CORS_ORIGINS=["http://localhost:3000"]
+      - SECRET_KEY=change_me_in_production
+      - AUTH_MODE=local
+      - AUTH_USERNAME=admin
+      - AUTH_PASSWORD_HASH=$2b$12$$RtMbyw17l4N5UGzeXMNAWuzCaVV.XFBY7ZetWheQhxcBDcxahapkG
+      - SCANNER_RANGES=["10.0.0.0/24"]
+      - SCANNER_HTTP_RANGES=["1-65535"]
+      - SCANNER_HTTP_PROBE_ENABLED=false
+      - SCANNER_HTTP_VERIFY_TLS=false
+      - STATUS_CHECKER_INTERVAL=60
+      - MCP_API_KEY=mcp_sk_changeme
+      - MCP_SERVICE_KEY=svc_changeme
+    volumes:
+      - /root/docker/homelable:/app/data
+    cap_add:
+      - NET_RAW
+    network_mode: host
+
+  homelable-frontend:
+    image: ghcr.io/pouzor/homelable-frontend:latest
+    container_name: homelable-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    extra_hosts:
+      - "backend:10.0.0.111"
+    depends_on:
+      - homelable-backend
+    
+  # agent-dvr:
+  #   # runtime: nvidia
+  #   image: "mekayelanik/ispyagentdvr:latest"
+  #   container_name: agent-dvr
+  #   devices:
+  #     - /dev/dri:/dev/dri
+  #   environment:
+  #     - PUID=1000
+  #     - PGID=1000
+  #     - AGENTDVR_WEBUI_PORT=8090
+  #     - TZ=America/Sao_Paulo
+  #     - NVIDIA_VISIBLE_DEVICES=all
+  #   volumes:
+  #     - /root/docker/AgentDVR/config/:/AgentDVR/Media/XML/
+  #     - /root/docker/AgentDVR/media/:/AgentDVR/Media/WebServerRoot/Media/
+  #     - /root/docker/AgentDVR/commands:/AgentDVR/Commands/
+  #   ports:
+  #     - 8090:8090
+  #     - 3478:3478/udp
+  #     - 50000-50100:50000-50100/udp
+  #   restart: unless-stopped
+  #   extra_hosts:
+  #     - "docker:10.0.0.111"
+
+  # homeassistant:
+  #   image: "ghcr.io/home-assistant/home-assistant:stable"
+  #   container_name: homeassistant
+  #   volumes:
+  #     - /root/docker/homeassistant/config:/config
+  #     - /etc/localtime:/etc/localtime:ro
+  #     - /run/dbus:/run/dbus:ro
+  #   restart: unless-stopped
+  #   privileged: true
+  #   network_mode: host
+  #   extra_hosts:
+  #     - "docker:10.0.0.111"

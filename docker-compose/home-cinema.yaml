@@ -1,24 +1,33 @@
 ---
 services:
-  plex:
-    image: plexinc/pms-docker:latest
-    container_name: plex
+  jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: jellyfin
+    runtime: nvidia
     environment:
-      - TZ=America/Sao_Paulo
       - PUID=1000
       - PGID=1000
-      - VA_DRIVER=IHD
-      - PLEX_HW_TRANS_MAX=16
+      - TZ=America/Sao_Paulo
+      - NVIDIA_VISIBLE_DEVICES=all
     volumes:
-      - /root/docker/plex/config:/config
-      - /root/docker/plex/data:/data
-      - /root/docker/plex/transcode:/transcode
-      - /mnt/Movies:/movies
-      - '/mnt/TV Shows:/tv'
-    extra_hosts:
-      - "docker:10.0.0.111"
+      - /root/docker/jellyfin:/config
+      - '/mnt/TV Shows:/data/tvshows'
+      - /mnt/Movies:/data/movies
+    devices:
+      - /dev/dri:/dev/dri
+    ports:
+      - 8096:8096
+      - 8920:8920 #optional
+      - 7359:7359/udp #optional
+      - 1900:1900/udp #optional
     restart: unless-stopped
-    network_mode: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -50,6 +59,8 @@ services:
       - /mnt/Downloads:/downloads
     ports:
       - 8989:8989
+    extra_hosts:
+      - "docker:10.0.0.111"
     restart: unless-stopped
 
   bazarr:
@@ -84,16 +95,16 @@ services:
       - "docker:10.0.0.111"
     restart: unless-stopped
 
-  overseerr:
-    image: sctx/overseerr
-    container_name: overseerr
+  seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: seerr
     depends_on:
       - qbittorrent
     environment:
       - TZ=America/Sao_Paulo
       - PORT=5055
     volumes:
-      - /root/docker/overseerr/config:/app/config
+      - /root/docker/seerr/config:/app/config
     ports:
       - '5055:5055'
     extra_hosts:
